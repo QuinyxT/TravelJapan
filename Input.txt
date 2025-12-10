@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>大阪9天遊 - 高雅互動行程表</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+       body { font-family: Georgia, serif; background: #FFFFF0; color: #333; margin: 0; padding: 20px; line-height: 1.6; }
+       h1, h2 { color: #DAA520; text-align: center; transition: transform 0.3s ease; }
+       h1:hover { transform: scale(1.05); }
+       .container { max-width: 1200px; margin: 0 auto; background: #B0E0E6; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+       .day { background: white; margin: 10px 0; padding: 15px; border-left: 5px solid #DAA520; transition: box-shadow 0.3s; cursor: move; }
+       .day:hover { box-shadow: 0 2px 4px rgba(0,0,0,0.2); transform: translateY(-2px); }
+       .activity { margin: 10px 0; padding: 10px; background: #FFFFF0; border-radius: 5px; }
+       .map-container { height: 400px; margin: 20px 0; border: 2px solid #DAA520; border-radius: 5px; }
+       #map { height: 100%; }
+       .budget { background: #B0E0E6; padding: 15px; border-radius: 5px; }
+       input { margin: 5px; padding: 5px; border: 1px solid #DAA520; border-radius: 3px; }
+       button { background: #DAA520; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; transition: background 0.3s; }
+       button:hover { background: #B8860B; }
+       a { color: #DAA520; text-decoration: none; }
+       a:hover { text-decoration: underline; }
+       .route-opt { font-style: italic; color: #666; }
+</style>
+</head>
+<body>
+<div class="container">
+<h1>大阪9天遊 - 優雅探索之旅</h1>
+<p style="text-align: center;">拖拽調整行程 | 點擊地圖查看景點 | 輸入人數計算預算</p>
+<div id="itinerary">
+<div class="day" draggable="true" data-day="1">
+<h2>Day 1: 抵達 & 大阪城探索 (動線: 機場→城堡→Dotonbori, 總步行<2km)</h2>
+<div class="activity">上午: 抵達關西機場，搭JR至大阪城 (票價: 600日元, 9:00-17:00)<br>
+               下午: Dotonbori散步 & 晚餐: Takoyaki街食 (平均800日元, 訂位: <a href="https://www.tablecheck.com/en/shops/takoyaki-dotonbori" target="_blank">TableCheck</a>, 開放: 全天)</div>
+<div class="route-opt">優化建議: 從南區出發，順時針環繞。</div>
+</div>
+<div class="day" draggable="true" data-day="2">
+<h2>Day 2: Umeda現代區 (動線: Umeda Sky→HEP FIVE, 總交通<10分)</h2>
+<div class="activity">上午: Umeda Sky Building觀景 (票價: 1,500日元, 9:30-22:30)<br>
+               下午: 購物 & 晚餐: Okonomiyaki (平均2,500日元, 訂位: <a href="https://www.tablecheck.com/en/shops/okonomiyaki-chibo" target="_blank">TableCheck</a>, 開放: 11:00-23:00)</div>
+<div class="route-opt">優化建議: 地鐵直達，北區集中。</div>
+</div>
+<div class="day" draggable="true" data-day="3">
+<h2>Day 3: 水族館 & Tempozan (動線: Kaiyukan→摩天輪, 總步行<1km)</h2>
+<div class="activity">全天: Osaka Aquarium Kaiyukan (票價: 2,700日元, 10:00-20:00)<br>
+               晚餐: 海鮮 (平均3,000日元, 訂位: <a href="https://www.tablecheck.com/en/shops/kaiyukan-seafood" target="_blank">TableCheck</a>, 開放: 12:00-21:00)</div>
+<div class="route-opt">優化建議: 西區單點，避開高峰。</div>
+</div>
+<div class="day" draggable="true" data-day="4">
+<h2>Day 4: 日趟奈良 (動線: JR至Nara Park→Todai-ji, 總交通40分)</h2>
+<div class="activity">全天: 鹿公園 & Todai-ji寺 (票價: 600日元, 8:00-17:00)<br>
+               午餐: 鹿餅 (平均1,000日元, 無需訂位, 開放: 全天)</div>
+<div class="route-opt">優化建議: 早出發，東南順遊。</div>
+</div>
+<div class="day" draggable="true" data-day="5">
+<h2>Day 5: 日趟京都 (動線: Fushimi Inari→Arashiyama, 總交通30分)</h2>
+<div class="activity">全天: 伏見稻荷 & 嵐山竹林 (免費, 24小時/9:00-17:00)<br>
+               晚餐: Matcha甜點 (平均2,000日元, 訂位: <a href="https://www.tablecheck.com/en/shops/uji-matcha" target="_blank">TableCheck</a>, 開放: 10:00-18:00)</div>
+<div class="route-opt">優化建議: 南北軸線，避開中午人群。</div>
+</div>
+<div class="day" draggable="true" data-day="6">
+<h2>Day 6: Shinsekai復古區 (動線: Tsutenkaku→Kuromon Market, 總步行<1.5km)</h2>
+<div class="activity">上午: 通天閣塔 (票價: 900日元, 9:00-21:00)<br>
+               下午: Kuromon市場 & 晚餐: Kobe牛 (平均4,000日元, 訂位: <a href="https://www.tablecheck.com/en/shops/kobe-beef-shinsekai" target="_blank">TableCheck</a>, 開放: 11:00-22:00)</div>
+<div class="route-opt">優化建議: 南區環形。</div>
+</div>
+<div class="day" draggable="true" data-day="7">
+<h2>Day 7: 日趟神戶 (動線: Kitano-cho→Harborland, 總交通30分)</h2>
+<div class="activity">全天: 北野異人館 & 神戶港 (免費/1,000日元, 9:00-17:00)<br>
+               午餐: 神戶牛 (平均5,000日元, 訂位: <a href="https://www.tablecheck.com/en/shops/kobe-beef-wakkoqu" target="_blank">TableCheck</a>, 開放: 11:30-14:00/18:00-22:00)</div>
+<div class="route-opt">優化建議: 西東橫跨，晚歸。</div>
+</div>
+<div class="day" draggable="true" data-day="8">
+<h2>Day 8: Universal Studios (動線: 全園內, 總步行多)</h2>
+<div class="activity">全天: USJ主題樂園 (票價: 8,900日元, 9:00-21:00)<br>
+               晚餐: 園內快餐 (平均1,500日元, 無需訂位, 開放: 全天)</div>
+<div class="route-opt">優化建議: 預購Express Pass，早進園。</div>
+</div>
+<div class="day" draggable="true" data-day="9">
+<h2>Day 9: 購物 & 離開 (動線: Shinsaibashi→機場, 總交通<1小時)</h2>
+<div class="activity">上午: Shinsaibashi購物街 (免費, 全天)<br>
+               午餐: 街頭小吃 (平均1,000日元, 訂位: <a href="https://www.tablecheck.com/en/shops/shinsaibashi-streetfood" target="_blank">TableCheck</a>, 開放: 全天)</div>
+<div class="route-opt">優化建議: 南區結束，直達機場。</div>
+</div>
+</div>
+<div class="map-container">
+<div id="map"></div>
+</div>
+<div class="budget">
+<h2>預算估算模組</h2>
+<label>人數: <input type="number" id="people" value="1" min="1"></label>
+<label>票價區間: <select id="priceLevel"><option value="low">低 (80%)</option><option value="mid" selected>中 (100%)</option><option value="high">高 (120%)</option></select></label>
+<button onclick="calculateBudget()">計算總預算</button>
+<p id="totalBudget">預估總預算 (9天, 包含票價/餐食/交通): 90,000 日元 (1人)</p>
+</div>
+</div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+       // 互動地圖
+       const map = L.map('map').setView([34.6937, 135.5023], 11); // 大阪中心
+       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+       const markers = [
+           {coords: [34.6873, 135.5257], popup: 'Osaka Castle (Day1)'},
+           {coords: [34.6930, 135.5020], popup: 'Dotonbori (Day1)'},
+           {coords: [34.6984, 135.4944], popup: 'Umeda Sky (Day2)'},
+           {coords: [34.6545, 135.4284], popup: 'Kaiyukan (Day3)'},
+           {coords: [34.6851, 135.8398], popup: 'Nara Park (Day4)'},
